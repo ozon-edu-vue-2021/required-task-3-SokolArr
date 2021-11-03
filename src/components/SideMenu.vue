@@ -35,6 +35,7 @@
                 :text="item.text"
                 :counter="item.counter"
                 class="legend__item"
+                style="border: 1px solid #ccd8e4; border-radius: 6px;padding: 2px;"
               />
             </draggable>
 
