@@ -2,9 +2,11 @@
   <div class="menu">
     <div class="toolbar">
       <div class="toolbar__header">
+
         <template v-if="!isUserOpenned">
           <h3>Информация</h3>
         </template>
+
         <template v-else>
           <div class="action">
             <div
@@ -14,10 +16,17 @@
           </div>
           <h3>Профиль</h3>
         </template>
+
       </div>
       <div class="toolbar__actions"></div>
     </div>
     <div class="content">
+      <div v-show="!isUserOpenned" class="legend__chart"
+           style="display: flex;flex-direction: column;align-items: center;margin-bottom: 10px">
+        <div class="chart-wrapper" style="width: 250px">
+          <Doughnut ref="chart" />
+        </div>
+      </div>
       <div
         v-if="!isUserOpenned"
         class="legend"
@@ -38,7 +47,6 @@
                 style="border: 1px solid #ccd8e4; border-radius: 6px;padding: 2px;"
               />
             </draggable>
-
           </div>
           <span
             v-else
@@ -47,14 +55,10 @@
                         Список пуст
                     </span>
         </div>
-        <div class="legend__chart">
-          <h3>Круговая диаграмма для наглядности</h3>
-          <!-- chart -->
-          <Doughnut ref="chart" />
-        </div>
+
       </div>
       <div
-        v-else
+        v-if="isUserOpenned"
         class="profile"
       >
         <div
@@ -63,8 +67,9 @@
         >
           Место пустое
         </div>
-
-        <PersonCard :person="person" />
+        <PersonCard
+          v-if="person"
+          :person="person" />
       </div>
     </div>
   </div>
@@ -110,7 +115,7 @@ export default {
       this.legend = legend;
     },
     closeProfile() {
-      this.$emit("update:isUserOpenned", false);
+      this.$emit("closeMe", false);
     },
     makeChart() {
       const chartData = {

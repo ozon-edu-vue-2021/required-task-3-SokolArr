@@ -7,7 +7,7 @@
       />
     </div>
     <div class="legend-item__label">{{ text }}</div>
-    <div class="legend-item__counter"> Кол-во сотрудников:{{ counter }}</div>
+    <div class="legend-item__counter"> Колличество сотрудников:{{ counter }}</div>
   </div>
 </template>
 

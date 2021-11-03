@@ -1,8 +1,16 @@
 <template>
   <div id="app">
     <div class="office">
-      <Map />
-      <SideMenu v-if="true" />
+      <Map
+        @tappedOnTable="tappedOnTable"
+      />
+      <SideMenu
+        v-if="true"
+        :is-user-openned="isTapped"
+        :person="person"
+        @closeMe="closeMe"
+        ref="sideMenu"
+      />
     </div>
   </div>
 </template>
@@ -10,13 +18,41 @@
 <script>
 import Map from "./components/Map.vue";
 import SideMenu from "./components/SideMenu.vue";
+import people from "@/assets/data/people.json";
 
 export default {
   name: "App",
+  data() {
+    return {
+      isTapped: false,
+      person: null,
+      people: null
+    };
+  },
   components: {
     Map,
     SideMenu
+  },
+  mounted() {
+    this.people = people;
+  },
+  methods: {
+    tappedOnTable(tableId) {
+      //console.log(tableId);
+      if (tableId <= 12) {
+        this.person = this.people.find((person) => person._id === tableId);
+      } else {
+        this.person = null;
+      }
+      this.isShowChart = false;
+      this.isTapped = true;
+    },
+    closeMe() {
+      this.isTapped = false;
+      //this.$refs.sideMenu.makeChart();
+    }
   }
+
 };
 </script>
 

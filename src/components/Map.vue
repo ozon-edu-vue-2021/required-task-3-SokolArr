@@ -27,6 +27,7 @@ import TableSVG from "@/assets/images/workPlace.svg";
 import tables from "@/assets/data/tables.json";
 import legend from "@/assets/data/legend.json";
 
+
 import * as d3 from "d3";
 
 export default {
@@ -51,13 +52,14 @@ export default {
     this.svg = d3.select(this.$refs.svg);
     this.tableSVG = d3.select(this.$refs.table);
 
-    this.g = this.svg.select("g"); //получили <g>
+    this.g = this.svg.select("g"); //получили <g> из svg
+
     if (this.g) {
       this.drawTables();
     } else {
       console.log("Error no <g>");
     }
-    console.log(this.svg, this.g);
+    
   },
   methods: {
     drawTables() {
@@ -65,17 +67,17 @@ export default {
       const svgTablesGroup = this.g.append("g").classed("groupPlaces", true);
       //Добавили новый <g> в конец svg и дали класс = groupPlaces
       //-------------------
-      console.log(svgTablesGroup);
 
       this.tables.map((table) => {
-
-
         //Этап добавления и размещения рабочего места:
         const tmpTable = svgTablesGroup
           .append("g")
           .attr("transform", `translate(${table.x},${table.y}),scale(0.5)`)
           .attr("id", table._id)
-          .classed("employer-place", true);
+          .classed("employer-place", true)
+          .on("click", () => {
+            this.$emit("tappedOnTable", table._id);
+          });
 
         //Этап добавления и размещения рабочего стола:
         tmpTable
@@ -83,7 +85,6 @@ export default {
           .attr("transform", `rotate(${table.rotate || 0})`)
           .attr("group_id", table.group_id)
           .html(this.tableSVG.html());
-
 
         // Этап изменения рабочего стола:
         tmpTable
