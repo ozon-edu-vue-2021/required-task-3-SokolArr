@@ -7,7 +7,9 @@
       class="map-root"
     >
       <!-- map -->
-      <MapSVG ref="svg" />
+      <MapSVG ref="svg"
+              v-click-outside="clickedOutside"
+      />
 
       <!-- test table -->
       <TableSVG
@@ -27,6 +29,7 @@ import TableSVG from "@/assets/images/workPlace.svg";
 import tables from "@/assets/data/tables.json";
 import legend from "@/assets/data/legend.json";
 
+import ClickOutside from "vue-click-outside";
 
 import * as d3 from "d3";
 
@@ -50,6 +53,7 @@ export default {
     this.legend = legend;
 
     this.svg = d3.select(this.$refs.svg);
+
     this.tableSVG = d3.select(this.$refs.table);
 
     this.g = this.svg.select("g"); //получили <g> из svg
@@ -59,7 +63,7 @@ export default {
     } else {
       console.log("Error no <g>");
     }
-    
+
   },
   methods: {
     drawTables() {
@@ -90,7 +94,14 @@ export default {
         tmpTable
           .attr("fill", legend.find((legendEl) => legendEl.group_id === table.group_id)?.color ?? "transparent");
       });
+    },
+    clickedOutside() {
+      console.log("clickedOutside");
+      this.$emit("clickedOutside");
     }
+  },
+  directives: {
+    ClickOutside
   }
 };
 </script>

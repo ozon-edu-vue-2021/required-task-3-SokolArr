@@ -3,7 +3,10 @@
     <div class="office">
       <Map
         @tappedOnTable="tappedOnTable"
+        @clickedOutside="closeMe"
+        v-if="true"
       />
+
       <SideMenu
         v-if="true"
         :is-user-openned="isTapped"
@@ -12,6 +15,7 @@
         ref="sideMenu"
       />
     </div>
+    <!--    <div v-click-outside="closeMe"></div>-->
   </div>
 </template>
 
@@ -19,6 +23,8 @@
 import Map from "./components/Map.vue";
 import SideMenu from "./components/SideMenu.vue";
 import people from "@/assets/data/people.json";
+
+import ClickOutside from "vue-click-outside";
 
 export default {
   name: "App",
@@ -51,6 +57,9 @@ export default {
       this.isTapped = false;
       //this.$refs.sideMenu.makeChart();
     }
+  },
+  directives: {
+    ClickOutside
   }
 
 };
