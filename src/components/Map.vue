@@ -8,8 +8,9 @@
     >
       <!-- map -->
       <MapSVG ref="svg"
-              v-click-outside="clickedOutside"
+
       />
+      <!--      v-click-outside="clickedOutside"-->
 
       <!-- test table -->
       <TableSVG
@@ -52,7 +53,7 @@ export default {
     this.tables = tables;
     this.legend = legend;
 
-    this.svg = d3.select(this.$refs.svg);
+    this.svg = d3.select(this.$refs.svg).classed("map-svg", true);
 
     this.tableSVG = d3.select(this.$refs.table);
 
@@ -63,6 +64,36 @@ export default {
     } else {
       console.log("Error no <g>");
     }
+
+    // document.addEventListener("click", () => {
+    //   const empPlace = document.getElementsByClassName("wrapper-table");
+    //   let arrEmpPlaces = [];
+    //   for (let index = 0; index < empPlace.length; index++) {
+    //     arrEmpPlaces[index] = empPlace.item(index);
+    //   }
+    //
+    //   // if (!(arrEmpPlaces.includes(evt.target))) {
+    //   //   console.log("click outside");
+    //   // } else {
+    //   //   console.log("click inside");
+    //   // }
+    // });
+
+    document.addEventListener("click", (evt) => {
+      const el = document.getElementsByClassName("map-svg");
+      let tmpArr = [];
+
+      for (let index = 0; index < el.length; index++) {
+        tmpArr[index] = el.item(index);
+      }
+
+      if (tmpArr.includes(evt.target)) {
+        //console.log("clicked on map");
+        this.clickedOutside();
+      } else {
+        //console.log("another click");
+      }
+    });
 
   },
   methods: {
@@ -82,7 +113,6 @@ export default {
           .on("click", () => {
             this.$emit("tappedOnTable", table._id);
           });
-
         //Этап добавления и размещения рабочего стола:
         tmpTable
           .append("g")
@@ -95,8 +125,8 @@ export default {
           .attr("fill", legend.find((legendEl) => legendEl.group_id === table.group_id)?.color ?? "transparent");
       });
     },
+
     clickedOutside() {
-      console.log("clickedOutside");
       this.$emit("clickedOutside");
     }
   },
